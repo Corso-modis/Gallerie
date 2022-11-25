@@ -1,18 +1,23 @@
 <div *ngIf="listaGallerie">
     <h1>LISTA GALLERIE</h1>
+    <button (click)="loadGallerie()">Refresh</button>
     <table border="2px solid black">
         <thead>
             <tr>
                 <th>Titolo</th>
                 <th>Numero di immagini</th>
+                <th>Bottoni</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let galleria of gallerie">
-                <td> {{galleria.titolo}} </td>
-                <td> {{galleria.listaImmagini.length}} </td>
-                <button (click)="infoGalleria(galleria)">Info</button>
-                <button (click)="editingGalleria(galleria)">Edit</button>
+            <tr *ngFor="let g of gallerie">
+                <td> {{g.titolo}} </td>
+                <td *ngIf="g.immagini != null; else elseBlock"> {{g.immagini.length}} </td>
+                <ng-template #elseBlock>
+                    <td>0</td>
+                </ng-template>
+                <button (click)="infoGalleria(g)">Info</button>
+                <button (click)="editingGalleria(g)">Edit</button>
             </tr>
         </tbody>
     </table>
@@ -29,27 +34,30 @@
     </form>
 </div>
 
-<div *ngIf="editing">
-    <h1>EDITING GALLERIA</h1>
-    <div>
-        <h1>{{galleria.titolo}}</h1>
-        <img *ngFor="let img of galleria.listaImmagini" src={{img.url}} alt={{img.titolo}}>
-    </div>
-
-    <div *ngFor="let img of immagini">
-        <img  src={{img.url}} alt={{img.titolo}}>
-        <button (click)="sendImmagine(galleria.titolo, img.id)" >Aggiungi</button>
-    </div>
-    <button (click)="mostraLista()">Indietro</button>
-</div>
-
 <div *ngIf="info">
     <h1>Info Galleria</h1>
+    <button (click)="mostraLista()">Indietro</button>
     <div>
         <h1> {{galleria.titolo}} </h1>
-        <div *ngFor="let img of galleria.listaImmagini"> 
+        <div *ngFor="let img of galleria.immagini">
             <img src={{img.url}} alt={{img.titolo}}>
+            <p> {{img.titolo}} </p>
         </div>
     </div>
+</div>
+
+<div *ngIf="editing">
+    <h1>EDITING GALLERIA</h1>
     <button (click)="mostraLista()">Indietro</button>
+    <div>
+        <h1>{{galleria.titolo}}</h1>
+        <img *ngFor="let img of galleria.immagini" src={{img.url}} alt={{img.titolo}}>
+    </div>
+
+    <p>-===============================================================================-</p>
+
+    <div *ngFor="let img of immagini">
+        <img src={{img.url}} alt={{img.titolo}}>
+        <button (click)="sendImmagine(galleria.titolo, img.id)">Aggiungi</button>
+    </div>
 </div>

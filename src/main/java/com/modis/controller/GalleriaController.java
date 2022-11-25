@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import com.modis.entities.Galleria;
 import com.modis.service.GalleriaService;
 import com.modis.service.InsertImageService;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/galleria/api")
 public class GalleriaController {
@@ -30,9 +32,10 @@ public class GalleriaController {
 //		List<String> titoli = galleriaService.printTitoli();
 //		return new ResponseEntity<>(titoli,HttpStatus.OK);
 //	}
-	@GetMapping()
+	@GetMapping("/all")
 	public ResponseEntity<List<Galleria>> findAll(){
 		List<Galleria> titoli = galleriaService.findAll();
+		System.err.println(titoli);
 		return new ResponseEntity<>(titoli,HttpStatus.OK);
 	}
 	
@@ -45,9 +48,9 @@ public class GalleriaController {
 	}
 	
 	@PostMapping("/add/{titoloGalleria}/{idImmagine}")
-	public ResponseEntity<String> addImmagine(@PathVariable String titoloGalleria, @PathVariable long idImmagine ){
+	public ResponseEntity<?> addImmagine(@PathVariable String titoloGalleria, @PathVariable long idImmagine ){
 		insertService.insertImage(titoloGalleria, idImmagine);
-		return new ResponseEntity<>("Inserimento completato", HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@PostMapping("/delete/{id}")
