@@ -1,5 +1,7 @@
 package com.modis.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +19,7 @@ public class Immagine {
 	private String titolo;
 	private String url;
 	
+	@JsonIgnore
 	@JoinColumn
 	@ManyToOne
 	private Galleria galleria;

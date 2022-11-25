@@ -19,7 +19,6 @@ public class Galleria {
 
 	private String titolo;
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "galleria")
 	private List<Immagine> immagini;
 
