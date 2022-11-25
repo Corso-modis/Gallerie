@@ -11,7 +11,7 @@ type Immagine = {
 type Galleria = {
   id: number;
   titolo: string;
-  listaImmagini: Immagine[];
+  immagini: Immagine[];
 };
 
 type InsertImage = {
@@ -36,7 +36,7 @@ export class GestioneGallerieComponent {
   galleria = {
     id: 0,
     titolo: '',
-    listaImmagini: [
+    immagini: [
       {
         id: 0,
         url: '',
@@ -52,32 +52,50 @@ export class GestioneGallerieComponent {
   constructor(private http: HttpClient) {}
 
   loadImmagini() {
-    this.http.get('http://localhost:8080/images/api').subscribe((data: any) => {
-      this.immagini = data as Immagine[];
-    });
+    this.http
+      .get('http://localhost:8080/immagine/api/all')
+      .subscribe((data: any) => {
+        this.immagini = data as Immagine[];
+      });
+    console.log(this.immagini);
   }
 
   loadGallerie() {
-    this.http.get('http://localhost:8080/gallery/api').subscribe((data: any) => {
-      this.gallerie = data as Galleria[];
-    });
+    this.http
+      .get('http://localhost:8080/galleria/api/all')
+      .subscribe((data: any) => {
+        this.gallerie = data as Galleria[];
+      });
   }
 
   sendGalleria(galleria: any) {
     this.galleria = galleria;
-    this.galleria.listaImmagini = [];
-    let requestBody = galleria;
+    this.galleria.immagini = [];
     this.http
-      .post('http://localhost:8080/gallery/api', requestBody)
+      .post('http://localhost:8080/galleria/api/' + galleria.titolo, null)
       .subscribe(() => this.loadGallerie());
+    this.loadGallerie();
     this.toggleForm();
   }
 
   sendImmagine(titoloGalleria: string, idImmagine: number) {
     this.http
-      .post('http://localhost:8080/gallery/api/add/'+titoloGalleria+'/'+idImmagine, null)
+      .post(
+        'http://localhost:8080/galleria/api/add/' +
+          titoloGalleria +
+          '/' +
+          idImmagine,
+        null
+      )
       .subscribe(() => this.loadImmagini());
-    this.toggleForm();
+    this.loadGallerie();
+    console.log(this.gallerie);
+    
+    this.gallerie.forEach((element) => {
+      if (element.titolo == titoloGalleria) {
+        this.galleria = element;  
+      }
+    });
   }
 
   toggleForm() {
@@ -92,12 +110,14 @@ export class GestioneGallerieComponent {
     this.info = true;
     this.listaGallerie = false;
     this.galleria = galleria;
+    console.log(this.galleria);
   }
 
   editingGalleria(galleria: any) {
     this.editing = true;
     this.listaGallerie = false;
     this.galleria = galleria;
+    this.loadImmagini();
   }
 
   mostraLista() {

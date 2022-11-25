@@ -46,6 +46,10 @@ public class Galleria {
 	public void setImmagini(List<Immagine> immagini) {
 		this.immagini = immagini;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Galleria [id=" + id + ", titolo=" + titolo + ", immagini=" + immagini + "]";
+	}
 	
 }
