@@ -1,0 +1,55 @@
+<div *ngIf="listaGallerie">
+    <h1>LISTA GALLERIE</h1>
+    <table border="2px solid black">
+        <thead>
+            <tr>
+                <th>Titolo</th>
+                <th>Numero di immagini</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let galleria of gallerie">
+                <td> {{galleria.titolo}} </td>
+                <td> {{galleria.listaImmagini.length}} </td>
+                <button (click)="infoGalleria(galleria)">Info</button>
+                <button (click)="editingGalleria(galleria)">Edit</button>
+            </tr>
+        </tbody>
+    </table>
+
+    <button (click)="toggleForm()">Toggle</button>
+    <form *ngIf="save" #myForm="ngForm" (ngSubmit)="sendGalleria(myForm.value)">
+        <p>
+            <label>Titolo</label>
+            <input type="text" [(ngModel)]="galleria.titolo" name="titolo" required>
+        </p>
+        <p>
+            <button type="submit" [disabled]="!myForm.valid">Submit</button>
+        </p>
+    </form>
+</div>
+
+<div *ngIf="editing">
+    <h1>EDITING GALLERIA</h1>
+    <div>
+        <h1>{{galleria.titolo}}</h1>
+        <img *ngFor="let img of galleria.listaImmagini" src={{img.url}} alt={{img.titolo}}>
+    </div>
+
+    <div *ngFor="let img of immagini">
+        <img  src={{img.url}} alt={{img.titolo}}>
+        <button (click)="sendImmagine(galleria.titolo, img.id)" >Aggiungi</button>
+    </div>
+    <button (click)="mostraLista()">Indietro</button>
+</div>
+
+<div *ngIf="info">
+    <h1>Info Galleria</h1>
+    <div>
+        <h1> {{galleria.titolo}} </h1>
+        <div *ngFor="let img of galleria.listaImmagini"> 
+            <img src={{img.url}} alt={{img.titolo}}>
+        </div>
+    </div>
+    <button (click)="mostraLista()">Indietro</button>
+</div>
