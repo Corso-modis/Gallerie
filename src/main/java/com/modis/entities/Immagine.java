@@ -24,12 +24,10 @@ public class Immagine {
 	@ManyToOne
 	private Galleria galleria;
 
-	public Immagine(Long id, String titolo, String url, Galleria galleria) {
+	public Immagine(String titolo, String url) {
 		super();
-		this.id = id;
 		this.titolo = titolo;
 		this.url = url;
-		this.galleria = galleria;
 	}
 
 	public Immagine() {
