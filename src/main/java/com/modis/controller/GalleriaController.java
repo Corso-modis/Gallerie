@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.modis.entities.Galleria;
 import com.modis.service.GalleriaService;
 import com.modis.service.InsertImageService;
 
@@ -24,31 +25,35 @@ public class GalleriaController {
 	@Autowired
 	private InsertImageService insertService;
 	
+//	@GetMapping()
+//	public ResponseEntity<List<String>> printTitoli(){
+//		List<String> titoli = galleriaService.printTitoli();
+//		return new ResponseEntity<>(titoli,HttpStatus.OK);
+//	}
 	@GetMapping()
-	public ResponseEntity<List<String>> printTitoli(){
-		List<String> titoli = galleriaService.printTitoli();
-		return new ResponseEntity<titoli,HttpStatus.OK>;
+	public ResponseEntity<List<Galleria>> findAll(){
+		List<Galleria> titoli = galleriaService.findAll();
+		return new ResponseEntity<>(titoli,HttpStatus.OK);
 	}
 	
-	@PostMapping()
+	@PostMapping("/{titolo}")
 	public ResponseEntity<String> save(@PathVariable String titolo){
 		Galleria galleria = new Galleria();
 		galleria.setTitolo(titolo);
 		galleriaService.save(galleria);
-		return new ResponseEntity<galleria.toString(), HttpStatus.CREATED>;
+		return new ResponseEntity<>("Galleria salvata", HttpStatus.CREATED);
 	}
 	
-	@PostMapping("/add")
+	@PostMapping("/add/{titoloGalleria}/{idImmagine}")
 	public ResponseEntity<String> addImmagine(@PathVariable String titoloGalleria, @PathVariable long idImmagine ){
 		insertService.insertImage(titoloGalleria, idImmagine);
-		return new ResponseEntity<"Inserimento completato", HttpStatus.OK>;
+		return new ResponseEntity<>("Inserimento completato", HttpStatus.OK);
 	}
 	
-	@PostMapping("/delete")
+	@PostMapping("/delete/{id}")
 	public ResponseEntity<String> deleteById(@PathVariable long id){
 		galleriaService.deleteById(id);
-		return new ResponseEntity<"Eliminazione completata", HttpStatus.OK>;
-		
+		return new ResponseEntity<>("Eliminazione completata", HttpStatus.OK);	
 	}
 	
 	
